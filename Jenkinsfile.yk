@@ -1,10 +1,71 @@
 pipeline {
-  agent any
-  
+  agent {
+    kubernetes {
+      //cloud 'kubernetes'
+      yaml """
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: docker
+    image: docker:1.11
+    command: ['cat']
+    tty: true
+    volumeMounts:
+    - name: dockersock
+      mountPath: /var/run/docker.sock
+  volumes:
+  - name: dockersock
+    hostPath:
+      path: /var/run/docker.sock
+"""
+    }
+  }
+
+  environment {
+    REPO_URL = 'https://github.com/alex-y-kozlov-sandbox/azure-voting-app-redis.git'
+    REPO_BRANCH = 'master'
+  }
+
   stages {
-    stage( 'Verify' ) {
+    stage( 'End on Agent' ) {
       steps {
-        echo "$GIT_BRANCH"
+        //echo "$GIT_BRANCH"
+        sh 'printenv'
+      }
+    }
+    stage( 'End on docker' ) {
+      steps {
+        container('docker') {
+          script {
+        //echo "$GIT_BRANCH"
+            sh 'printenv'
+          }
+        }
+      }
+    }    
+    stage( 'Docker Build') {
+      steps {
+        git branch: "$REPO_BRANCH", url: "$REPO_URL"
+        container('docker') {
+          script {
+            //def image = docker.build("ykpersonal/jenkins-az-test:0.1","m4")
+            //docker.withRegistry( '', 'DH-ykpersonal') {
+            //  image.push()
+            //}
+            //sh 'docker images -a'
+            
+            echo '***********started with docker container ******************************'
+            sh '''
+              printenv
+              cd azure-vote
+              docker build -t jenkins-pipeline .   
+              cd ..               
+              docker images -a
+            '''
+            echo '*********** finished with docker container ******************************'            
+          }
+        }
       }
     }
   }
