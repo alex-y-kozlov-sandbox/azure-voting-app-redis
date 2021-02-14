@@ -23,7 +23,8 @@ spec:
   }
 
   environment {
-    REPO_URL = 'https://github.com/alex-y-kozlov-sandbox/azure-voting-app-redis.git'
+    //REPO_URL = 'https://github.com/alex-y-kozlov-sandbox/azure-voting-app-redis.git'
+    REPO_URL = "$GIT_URL"
     REPO_BRANCH = 'master'
   }
 
