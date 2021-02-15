@@ -59,7 +59,7 @@ spec:
 
             echo '***********started with docker container ******************************'
             //sh 'printenv'
-            dir( $WORKSPACE/azure-vote ) {
+            dir( "$WORKSPACE/azure-vote" ) {
               //sh '''
               //  docker build -t jenkins-pipeline .
               //  docker images -a
