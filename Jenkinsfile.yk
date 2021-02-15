@@ -44,7 +44,7 @@ spec:
           }
         }
       }
-    }    
+    }
     stage( 'Docker Build') {
       steps {
         //git branch: "$REPO_BRANCH", url: "$REPO_URL"
@@ -56,16 +56,20 @@ spec:
             //  image.push()
             //}
             //sh 'docker images -a'
-            
+
             echo '***********started with docker container ******************************'
-            sh '''
-              printenv
-              cd azure-vote
-              docker build -t jenkins-pipeline .   
-              cd ..               
-              docker images -a
-            '''
-            echo '*********** finished with docker container ******************************'            
+            sh 'printenv'
+            dir( $WORKSPACE/azure-vote ) {
+              //sh '''
+              //  docker build -t jenkins-pipeline .
+              //  docker images -a
+              //'''
+              docker.withRegistry( '', 'DH-ykpersonal') {
+                def image = docker.build("ykpersonal/jenkins-course:0.1")
+                image.push()
+              }
+            }
+            echo '*********** finished with docker container ******************************'
           }
         }
       }
