@@ -45,7 +45,7 @@ spec:
         }
       }
     }
-    stage( 'Docker Build') {
+    stage( 'Docker Build/Push') {
       steps {
         //git branch: "$REPO_BRANCH", url: "$REPO_URL"
         checkout scm
@@ -59,6 +59,7 @@ spec:
 
             echo '***********started with docker container ******************************'
             //sh 'printenv'
+            echo "$WORKSPACE"
             dir( "$WORKSPACE/azure-vote" ) {
               //sh '''
               //  docker build -t jenkins-pipeline .
