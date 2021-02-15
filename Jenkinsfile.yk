@@ -58,7 +58,7 @@ spec:
             //sh 'docker images -a'
 
             echo '***********started with docker container ******************************'
-            sh 'printenv'
+            //sh 'printenv'
             dir( $WORKSPACE/azure-vote ) {
               //sh '''
               //  docker build -t jenkins-pipeline .
@@ -68,6 +68,7 @@ spec:
                 def image = docker.build("ykpersonal/jenkins-course:0.1")
                 image.push()
               }
+              sh 'docker images -a'
             }
             echo '*********** finished with docker container ******************************'
           }
