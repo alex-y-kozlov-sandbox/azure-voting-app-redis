@@ -47,7 +47,8 @@ spec:
     }    
     stage( 'Docker Build') {
       steps {
-        git branch: "$REPO_BRANCH", url: "$REPO_URL"
+        //git branch: "$REPO_BRANCH", url: "$REPO_URL"
+        checkout scm
         container('docker') {
           script {
             //def image = docker.build("ykpersonal/jenkins-az-test:0.1","m4")
